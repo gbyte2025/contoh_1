@@ -1,92 +1,88 @@
 <script>
-	import { onMount } from 'svelte';
-	let scrolled = false;
-	let menuOpen = false;
-	const toggleMenu = () => {
-		menuOpen = !menuOpen;
-	};
+	import { Sun, Moon, Menu, X } from 'lucide-svelte';
 
-	onMount(() => {
-		const handleScroll = () => {
-			scrolled = window.scrollY > 50;
-		};
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	});
+	let darkMode = false;
+	let menuOpen = false;
+
+	function toggleTheme() {
+		darkMode = !darkMode;
+	}
+
+	function toggleMenu() {
+		menuOpen = !menuOpen;
+	}
 </script>
 
-<header
-	class={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
-		scrolled ? 'bg-white shadow-md' : 'bg-transparent'
-	}`}
->
-	<div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 text-sm font-semibold">
-		<!-- Left Navigation -->
-		<nav class="hidden space-x-10 text-gray-800 uppercase md:flex">
-			<a href="#berries" class="transition hover:text-green-600">Berries</a>
-			<a href="#who-we-are" class="transition hover:text-green-600">Who We Are</a>
-		</nav>
+<header class="fixed z-50 w-full bg-white">
+	<div class="m-2 flex flex-row items-center justify-between">
+		<a href="/" class="p-2 text-2xl font-bold text-blue-600">MyBrand</a>
 
-		<!-- Logo Center -->
-		<a href="/" class="flex items-center justify-center">
-			<img
-				src="/logo.png"
-				alt="Always Fresh"
-				class="h-10 w-auto transition-transform duration-500 hover:scale-105"
-			/>
-		</a>
+		<!-- DESKTOP -->
+		<div class="hidden flex-row items-center gap-4 md:flex">
+			<nav>
+				<ul class="flex flex-row gap-5">
+					<li><a href="/" class="hover:text-blue-600">Home</a></li>
+					<li><a href="/about" class="hover:text-blue-600">About</a></li>
+					<li><a href="/contact" class="hover:text-blue-600">Contact</a></li>
+				</ul>
+			</nav>
 
-		<!-- Right Navigation -->
-		<nav class="hidden space-x-10 text-gray-800 uppercase md:flex">
-			<a href="#how-we-grow" class="transition hover:text-green-600">How We Grow</a>
-			<a href="#recipes" class="transition hover:text-green-600">Recipes</a>
-		</nav>
+			<div class="h-6 w-px bg-black"></div>
 
-		<!-- Mobile Menu Button -->
-		<button
-			class="text-gray-800 md:hidden"
-			on:click={() => (menuOpen = !menuOpen)}
-			aria-label="Toggle menu"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-				class="h-7 w-7"
+			<button
+				on:click={toggleTheme}
+				class="cursor-pointer rounded-md bg-gray-100 p-2 shadow-md transition hover:bg-gray-200"
 			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M4 6h16M4 12h16M4 18h16"
-				/>
-			</svg>
-		</button>
+				{#if darkMode}
+					<Moon size="22" />
+				{:else}
+					<Sun size="22" />
+				{/if}
+			</button>
+		</div>
 
-		<!-- Mobile Menu -->
-		{#if menuOpen}
-			<div class="bg-white shadow-md md:hidden">
-				<nav class="flex flex-col space-y-3 p-4">
-					<a href="#about" class="transition-colors hover:text-blue-600">Tentang Kami</a>
-					<a href="#services" class="transition-colors hover:text-blue-600">Layanan</a>
-					<a href="#portfolio" class="transition-colors hover:text-blue-600">Portofolio</a>
-					<a href="#contact" class="transition-colors hover:text-blue-600">Kontak</a>
-					<hr />
-					<a
-						href="/login"
-						class="block rounded-lg bg-blue-600 py-2 text-center text-white hover:bg-blue-700"
-					>
-						Masuk
-					</a>
-				</nav>
-			</div>
-		{/if}
+		<!-- MOBILE -->
+		<div class="flex flex-row items-center gap-3 md:hidden">
+			<button
+				on:click={toggleMenu}
+				class="cursor-pointer rounded-md bg-gray-100 p-2 shadow-md transition hover:bg-gray-200"
+			>
+				{#if menuOpen}
+					<X size="22" />
+				{:else}
+					<Menu size="22" />
+				{/if}
+			</button>
+
+			<button
+				on:click={toggleTheme}
+				class="cursor-pointer rounded-md bg-gray-100 p-2 shadow-md transition hover:bg-gray-200"
+			>
+				{#if darkMode}
+					<Moon size="22" />
+				{:else}
+					<Sun size="22" />
+				{/if}
+			</button>
+		</div>
 	</div>
-</header>
 
-<style>
-	header {
-		backdrop-filter: blur(10px);
-	}
-</style>
+	<!-- MENU MOBILE -->
+	{#if menuOpen}
+		<div class="absolute w-full bg-white shadow-md md:hidden">
+			<nav>
+				<ul class="flex flex-col items-center gap-3 border-t border-gray-200 py-4">
+					<li>
+						<a href="/" class="block text-center">Home</a>
+					</li>
+					<li>
+						<a href="/about" class="block text-center">About</a>
+					</li>
+					<li>
+						<a href="/contact" class="block text-center">Contact</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	{/if}
+</header>
