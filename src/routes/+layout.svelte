@@ -1,12 +1,13 @@
 <script>
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
-
-	let { children } = $props();
+	import Navbar from '$lib/components/Navbar.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<title>Nama Perusahaan</title>
 </svelte:head>
 
-{@render children?.()}
+<Navbar />
+<slot />
+<Footer />
